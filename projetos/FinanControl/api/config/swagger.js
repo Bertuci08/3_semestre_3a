@@ -499,6 +499,104 @@ const documentacao = {
                 }
             }
         },
+        "/transacoes/tipo/{tipo}": {
+            get: {
+                tags: ["Transações"],
+                summary: "Listar transações por tipo (Entrada ou Saída)",
+                parameters: [{
+                    name: "tipo",
+                    in: "path",
+                    required: true,
+                    description: "Tipo da transação (E para entrada, S para saída)",
+                    schema: {
+                        type: "string",
+                        enum: ["E", "S"],
+                        example: "S"
+                    }
+                
+                }],
+                responses: {
+                    200: {
+                        description: "Dados obtidos com sucesso!",
+                        content: {
+                            "application/json": {
+                                schema: {
+                                    type: "array",
+                                    items: { $ref: '#/components/schemas/Listar_Transacao' }
+                                }
+                            }
+                        }
+                    },
+                    500: {
+                        description: "Erro interno no servidor"
+                    }
+                }
+            }
+        },
+        "/transacoes/categoria/{id_categoria}": {
+            get: {
+                tags: ["Transações"],
+                summary: "Listar transações por categoria",
+                parameters: [{
+                    name: "id_categoria",
+                    in: "path",
+                    required: true,
+                    description: "ID da categoria das transações a serem listadas",
+                    schema: {
+                        type: "integer",
+                        example: 1
+                    }
+                }],
+                responses: {
+                    200: {
+                        description: "Dados obtidos com sucesso!",
+                        content: {
+                            "application/json": {
+                                schema: {
+                                    type: "array",
+                                    items: { $ref: '#/components/schemas/Listar_Transacao' }
+                                }
+                            }
+                        }
+                    },
+                    500: {
+                        description: "Erro interno no servidor"
+                    }
+                }
+            }
+        },
+        "/transacoes/subcategoria/{id_subcategoria}": {
+            get: {
+                tags: ["Transações"],
+                summary: "Listar transações por subcategoria",
+                parameters: [{
+                    name: "id_subcategoria",
+                    in: "path",
+                    required: true,
+                    description: "ID da subcategoria das transações a serem listadas",
+                    schema: {
+                        type: "integer",
+                        example: 1
+                    }
+                }],
+                responses: {
+                    200: {
+                        description: "Dados obtidos com sucesso!",
+                        content: {
+                            "application/json": {
+                                schema: {
+                                    type: "array",
+                                    items: { $ref: '#/components/schemas/Listar_Transacao' }
+                                }
+                            }
+                        }
+                    },
+                    500: {
+                        description: "Erro interno no servidor"
+                    }
+                }
+            }
+        },
         //Swagger Login
         "/login": {
             post: {
