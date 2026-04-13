@@ -630,6 +630,47 @@ const documentacao = {
                 }
             }
         },
+        "/transacoes/periodo": {
+            get: {
+                tags: ["Transações"],
+                summary: "Listar todas as transações",
+                parameters: [
+                    {
+                        name: "inicio",
+                        in: "query",
+                        required: true,
+                        description: "Data de início do período",
+                        schema: {
+                            type: "string",
+                            example: "01/04/2026"
+                        }
+                    },
+                    {
+                        name: "fim",
+                        in: "query",
+                        required: true,
+                        description: "Data de fim do período",
+                        schema: {
+                            type: "string",
+                            example: "10/04/2026"
+                        }
+                    }
+                ],
+                responses: {
+                    200: {
+                        description: "Dados obtidos com sucesso!",
+                        content: {
+                            "application/json": {
+                                schema: {
+                                    type: "array",
+                                    items: { $ref: '#/components/schemas/Listar_Transacao' }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+        }
     },
     components: {
         schemas: {
