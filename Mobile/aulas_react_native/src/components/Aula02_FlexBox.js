@@ -24,6 +24,7 @@ const estilos = StyleSheet.create({
         height: 50,
         backgroundColor: 'lightblue',
         textAlign: "center",
-        lineHeight: 50
+        lineHeight: 50,
+        margin: 70
     }
 })

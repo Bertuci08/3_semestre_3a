@@ -3,6 +3,7 @@ import { View, Text, Image, TextInput, Button, TouchableOpacity, StyleSheet } fr
 import Logo from '../../assets/icon.png';
 import { LinearGradient } from 'expo-linear-gradient';
 import Aula02_FlexBox from './Aula02_FlexBox';
+import Hr from './Hr';
 
 
 
@@ -11,7 +12,7 @@ const Aula02 = () => {
 
     return (
         <View>
-            <Text>----------------------------------------------------------------------------</Text>
+            <Hr />
             <Text>Aula 02 - Componentes Basicos</Text>
             <Text>Conhecendo os principais componentes do React Native</Text>
 
@@ -45,8 +46,6 @@ const Aula02 = () => {
             <LinearGradient colors={['blue', 'red', 'black']} style={{height: 50, padding: 10}}>
 
             </LinearGradient>
-
-
 
         <Aula02_FlexBox />
         </View>
