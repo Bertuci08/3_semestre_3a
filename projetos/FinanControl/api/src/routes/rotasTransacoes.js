@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { BD } from '../../db.js';
-import { verificarToken } from '../middlewares/autenticacao.js';
+import { autenticarToken } from '../middlewares/autenticacao.js';
 
 const router = Router();
 
 // Listar transações,mostrando categoria e subCategoria
-router.get('/transacoes', async (req, res) => {
+router.get('/transacoes', autenticarToken, async (req, res) => {
     try {
         //cria uma variavel para enviar o comando sql
         const comando = `SELECT t.id_transacao, t.valor, t.descricao, TO_CHAR(t.data_registro, 'DD/MM/YYYY') AS data_registro,
@@ -30,11 +30,12 @@ router.get('/transacoes', async (req, res) => {
     }
 })
 
-router.post('/transacoes', verificarToken, async (req, res) => {
+router.post('/transacoes', autenticarToken, async (req, res) => {
     const { valor, descricao, data_registro, data_vencimento, data_pagamento, tipo, id_categoria, id_subcategoria } = req.body;
+    const id_usuario = req.usuario.id_usuario;
     try {
-        const comando = `INSERT INTO transacoes(valor, descricao, data_registro, data_vencimento, data_pagamento, tipo, id_categoria, id_subcategoria) VALUES($1, $2, TO_DATE($3, 'DD/MM/YYYY'), TO_DATE($4, 'DD/MM/YYYY'), TO_DATE($5, 'DD/MM/YYYY'), $6, $7, $8)`;
-        const valores = [valor, descricao, data_registro, data_vencimento, data_pagamento, tipo, id_categoria, id_subcategoria];
+        const comando = `INSERT INTO transacoes(valor, descricao, data_vencimento, data_pagamento, tipo, id_categoria, id_subcategoria, id_usuario) VALUES($1, $2, TO_DATE($3, 'DD/MM/YYYY'), TO_DATE($4, 'DD/MM/YYYY'), TO_DATE($5, 'DD/MM/YYYY'), $6, $7, $8)`;
+        const valores = [valor, descricao, data_registro, data_vencimento, data_pagamento, tipo, id_categoria, id_subcategoria, id_usuario];
 
         await BD.query(comando, valores);
         return res.status(201).json({ message: 'Transação cadastrada com sucesso!' });
@@ -44,7 +45,7 @@ router.post('/transacoes', verificarToken, async (req, res) => {
     }
 })
 
-router.put('/transacoes/:id_transacao', verificarToken, async (req, res) => {
+router.put('/transacoes/:id_transacao', autenticarToken, async (req, res) => {
     const { id_transacao } = req.params;
     const { valor, descricao, data_registro, data_vencimento, data_pagamento, tipo, id_categoria, id_subcategoria } = req.body;
 
@@ -64,7 +65,7 @@ router.put('/transacoes/:id_transacao', verificarToken, async (req, res) => {
     }
 })
 
-router.delete('/transacoes/:id_transacao', verificarToken, async (req, res) => {
+router.delete('/transacoes/:id_transacao', autenticarToken, async (req, res) => {
     const { id_transacao } = req.params;
     try {
         const comando = `DELETE FROM transacoes WHERE id_transacao = $1`;
@@ -77,7 +78,7 @@ router.delete('/transacoes/:id_transacao', verificarToken, async (req, res) => {
 })
 
 // listando transações por tipo (E ou S)
-router.get('/transacoes/tipo/:tipo', async (req, res) => {
+router.get('/transacoes/tipo/:tipo', autenticarToken, async (req, res) => {
     const { tipo } = req.params;
     try {
         if (tipo !== 'E' && tipo !== 'S') {
@@ -104,7 +105,7 @@ router.get('/transacoes/tipo/:tipo', async (req, res) => {
 })
 
 // Busca por categoria pelo id_categoria
-router.get('/transacoes/categoria/:id_categoria', async (req, res) => {
+router.get('/transacoes/categoria/:id_categoria', autenticarToken, async (req, res) => {
     const { id_categoria } = req.params;
     try{
         if (!id_categoria) {
@@ -131,7 +132,7 @@ router.get('/transacoes/categoria/:id_categoria', async (req, res) => {
 })
 
 // Busca por subcategoria pelo id_subcategoria
-router.get('/transacoes/subcategoria/:id_subcategoria', async (req, res) => {
+router.get('/transacoes/subcategoria/:id_subcategoria', autenticarToken, async (req, res) => {
     const { id_subcategoria } = req.params;
     try{
         if (!id_subcategoria) {
@@ -158,7 +159,7 @@ router.get('/transacoes/subcategoria/:id_subcategoria', async (req, res) => {
 })
 
 // listar transações por periodo
-router.get('/transacoes/periodo', async (req, res) => {
+router.get('/transacoes/periodo', autenticarToken, async (req, res) => {
     const { inicio, fim } = req.query;
     // quando a query for acionada, a informação é enviada: ?inicio=01/01/2024&fim=31/12/2024
     try {
@@ -182,6 +183,26 @@ router.get('/transacoes/periodo', async (req, res) => {
     } catch (error) {
         console.error('Erro ao listar transacao', error.message);
         return res.status(500).json({ error: 'Erro ao interno transacao' + error.message });
+    }
+})
+
+// agendar compromissos, trabalhando com limites de datas e horarios
+router.post('/transacoes/agendar', autenticarToken, async (req, res) => {
+    const { valor, descricao, data_vencimento, data_pagamento, tipo, id_categoria, id_subcategoria } = req.body;
+
+    const id_usuario = req.usuario.id_usuario;
+
+    try {
+        const consulta = `SELECT id_transacao FROM transacoes WHERE data_vencimento = TO_DATE($1, 'DD/MM/YYYY') AND id_categoria = $2 AND id_usuario = $3`;
+        const conflito = await BD.query(consulta, [data_vencimento, id_categoria, id_usuario]);
+
+        if (conflito.rows.length > 0) {
+            return res.status(409).json({ message: 'Ja existe um agendamento nesta categoria e nesta data.'})
+        }
+
+        const comando = `INSERT INTO transacoes(valor, descricao, data_vencimento, data_pagamento, tipo, id_categoria, id_subcategoria, id_usuario) VALUES($1, $2, TO_DATE($3, 'DD/MM/YYYY'), TO_DATE($4, 'DD/MM/YYYY'), TO_DATE($5, 'DD/MM/YYYY'), $6, $7, $8)`;
+    } catch (error) {
+
     }
 })
 

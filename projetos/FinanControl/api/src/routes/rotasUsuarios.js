@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { BD } from "../../db.js";
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 import { autenticarToken } from '../middlewares/autenticacao.js'
 
 
@@ -49,7 +50,7 @@ router.post('/usuarios', async(req, res) => {
 
 // endpoint para atualizar um unico usuário
 // recebendo o parametro pelo id e buscando o usuario
-router.put('/usuarios/:id_usuario', verificarToken, async(req, res) =>{
+router.put('/usuarios/:id_usuario', autenticarToken, async(req, res) =>{
     // Id recebido via parametro
     const {id_usuario} = req.params;
 
@@ -81,7 +82,7 @@ router.put('/usuarios/:id_usuario', verificarToken, async(req, res) =>{
 })
 
 //Rota patch atualizando parcialmente as informações
-router.patch('/usuarios/:id_usuario', verificarToken, async(req,res) =>{
+router.patch('/usuarios/:id_usuario', autenticarToken, async(req,res) =>{
     const { id_usuario } = req.params;
     const {nome, email, senha} = req.body;
 
@@ -133,7 +134,7 @@ router.patch('/usuarios/:id_usuario', verificarToken, async(req,res) =>{
     }
 })
 
-router.delete('/usuarios/:id_usuario', verificarToken, async(req, res) =>{
+router.delete('/usuarios/:id_usuario', autenticarToken, async(req, res) =>{
     const {id_usuario} = req.params;
     try{
         //Executa o comando de delete
@@ -172,15 +173,17 @@ router.post('/login', async(req, res) =>{
             return res.status(401).json({message: 'Senha inválida.'})
         }
 
+        const token = jwt.sign({ id_usuario: usuario.id_usuario }, SECRET_KEY, { expiresIn: '15m' });
+
 
         return res.status(200).json({
             message: 'Login realizado com sucesso',
+            token: token,
             usuario: {
                 id_usuario: usuario.id_usuario,
                 nome: usuario.nome,
                 email: usuario.email
             },
-            token: gerarToken(usuario)
         })
     }catch(error){
         console.error('Erro ao atualizar usuario', error.message)

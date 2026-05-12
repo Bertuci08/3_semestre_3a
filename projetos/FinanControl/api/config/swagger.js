@@ -1,3 +1,5 @@
+import { request } from "express"
+
 const documentacao = {
     openapi: '3.0.3',
     info: {
@@ -673,6 +675,28 @@ const documentacao = {
                     }
                 }
             },
+        },
+        "/transacoes/agendar": {
+            post: {
+                tags: ['Transações'],
+                summary: 'Agendar compromisso unico',
+                description: "Esta rota verifica se o usuario possui um registro para a mesma data",
+                security: [{bearerAuth: []}],
+                requestBody: {
+                    content: {
+                        "application/json": {
+                            schema: {
+                                $ref: "#/components/schemas/Cadastrar_Transacao"
+                            }
+                        }
+                    }
+                },
+                responses: {
+                    201: {
+                        description: "Agendamento realizado com sucesso!"
+                    }
+                }
+            }
         }
     },
     components: {
