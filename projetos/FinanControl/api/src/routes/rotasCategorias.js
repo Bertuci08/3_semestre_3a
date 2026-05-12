@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { BD } from "../../db.js";
+import { verificarToken } from '../middlewares/autenticacao.js';
 
 const router = Router();
 
@@ -22,7 +23,7 @@ router.get('/categorias', async (req, res) => {
 })
 
 //Endpoint seguro contra sql Injection
-router.post('/categorias', async (req, res) => {
+router.post('/categorias', verificarToken, async (req, res) => {
     const { nome, descricao, cor, icone, tipo } = req.body;
     try {
 
@@ -41,7 +42,7 @@ router.post('/categorias', async (req, res) => {
 
 // endpoint para atualizar um unico usuário
 // recebendo o parametro pelo id e buscando o usuario
-router.put('/categorias/:id_categoria', async (req, res) => {
+router.put('/categorias/:id_categoria', verificarToken, async (req, res) => {
     // Id recebido via parametro
     const { id_categoria } = req.params;
 
@@ -70,7 +71,7 @@ router.put('/categorias/:id_categoria', async (req, res) => {
 
 //Rota patch atualizando parcialmente as informações
 
-router.delete('/categorias/:id_categoria', async (req, res) => {
+router.delete('/categorias/:id_categoria', verificarToken, async (req, res) => {
     const { id_categoria } = req.params;
     try {
         //Executa o comando de delete

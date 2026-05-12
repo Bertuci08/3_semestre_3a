@@ -1,10 +1,14 @@
 import { Router } from "express";
 import { BD } from "../../db.js";
 import bcrypt from 'bcrypt'
+import { autenticarToken } from '../middlewares/autenticacao.js'
+
+
 const router = Router();
+const SECRET_KEY = 'sua_chave_secreta';
 
 //Criando o endpoint para listar todos os usuarios
-router.get('/usuarios', async(req, res) =>{
+router.get('/usuarios', autenticarToken, async(req, res) =>{
     try{
         //cria uma variavel para enviar o comando sql
         const query = `SELECT * FROM usuarios WHERE ativo = true`
@@ -45,7 +49,7 @@ router.post('/usuarios', async(req, res) => {
 
 // endpoint para atualizar um unico usuário
 // recebendo o parametro pelo id e buscando o usuario
-router.put('/usuarios/:id_usuario', async(req, res) =>{
+router.put('/usuarios/:id_usuario', verificarToken, async(req, res) =>{
     // Id recebido via parametro
     const {id_usuario} = req.params;
 
@@ -77,7 +81,7 @@ router.put('/usuarios/:id_usuario', async(req, res) =>{
 })
 
 //Rota patch atualizando parcialmente as informações
-router.patch('/usuarios/:id_usuario', async(req,res) =>{
+router.patch('/usuarios/:id_usuario', verificarToken, async(req,res) =>{
     const { id_usuario } = req.params;
     const {nome, email, senha} = req.body;
 
@@ -129,7 +133,7 @@ router.patch('/usuarios/:id_usuario', async(req,res) =>{
     }
 })
 
-router.delete('/usuarios/:id_usuario', async(req, res) =>{
+router.delete('/usuarios/:id_usuario', verificarToken, async(req, res) =>{
     const {id_usuario} = req.params;
     try{
         //Executa o comando de delete
@@ -167,13 +171,16 @@ router.post('/login', async(req, res) =>{
         if(!senhaCorreta){
             return res.status(401).json({message: 'Senha inválida.'})
         }
+
+
         return res.status(200).json({
             message: 'Login realizado com sucesso',
             usuario: {
                 id_usuario: usuario.id_usuario,
                 nome: usuario.nome,
                 email: usuario.email
-            }
+            },
+            token: gerarToken(usuario)
         })
     }catch(error){
         console.error('Erro ao atualizar usuario', error.message)

@@ -1,9 +1,12 @@
 import { Router } from 'express';
 import { BD } from '../../db.js';
+import jwt from 'jsonwebtoken';
+import { autenticarToken } from '../middlewares/autenticacao.js';
 
 const router = Router();
+const SECRET_KEY = 'sua_chave_secreta';
 
-router.get('/agendamentos', async (req, res) => {
+router.get('/agendamentos', autenticarToken, async (req, res) => {
     try {
         const comando = `SELECT * FROM agendamentos WHERE ativo = true`
 
@@ -16,7 +19,7 @@ router.get('/agendamentos', async (req, res) => {
     }
 })
 
-router.post('/agendamentos', async (req, res) => {
+router.post('/agendamentos', autenticarToken, async (req, res) => {
     const { id_cliente, id_servico, data_hora, status } = req.body;
     try {
         const comando = `INSERT INTO AGENDAMENTOS(id_cliente, id_servico,
@@ -31,7 +34,7 @@ router.post('/agendamentos', async (req, res) => {
     }
 })
 
-router.put('/agendamentos/:id_agendamento', async (req, res) => {
+router.put('/agendamentos/:id_agendamento', autenticarToken, async (req, res) => {
     const { id_agendamento } = req.params;
     const { id_cliente, id_servico, data_hora, status } = req.body;
 
@@ -58,7 +61,7 @@ router.put('/agendamentos/:id_agendamento', async (req, res) => {
     }
 })
 
-router.delete('/agendamentos/:id_agendamento', async (req, res) => {
+router.delete('/agendamentos/:id_agendamento', autenticarToken, async (req, res) => {
     const { id_agendamento } = req.params;
 
     try {

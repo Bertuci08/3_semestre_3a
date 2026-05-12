@@ -16,6 +16,7 @@ const documentacao = {
         { name: 'Agendamentos', description: 'Operações relacionadas aos agendamentos' },
         { name: 'Serviços', description: 'Operações relacionadas aos serviços oferecidos' }
     ],
+    security: [{ bearerAuth: [] }],
     paths: {
         "/usuarios": {
             get: {
@@ -49,6 +50,7 @@ const documentacao = {
                         }
                     }
                 },
+                security: [],
                 responses: {
                     201: {
                         description: "Usuário cadastrado com sucesso!"
@@ -155,6 +157,7 @@ const documentacao = {
                         }
                     }
                 },
+                security: [],
                 responses: {
                     200: {
                         description: "Login realizado com sucesso!",
@@ -434,6 +437,13 @@ const documentacao = {
         },
     },
     components: {
+        securitySchemes: {
+            bearerAuth: {
+                type: 'http',
+                scheme: 'bearer',
+                bearerFormat: 'JWT'
+            }
+        },
         schemas: {
             Listar_Usuarios: {
                 type: "object",
@@ -481,7 +491,8 @@ const documentacao = {
                             nome: { type: "string", example: "Gabriel Bertuci" },
                             email: { type: "string", example: "gabrielbertuci@gmail.com" }
                         }
-                    }
+                    },
+                    token: { type: "string", example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }
                 }
             },
             Listar_Servicos: {

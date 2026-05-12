@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { BD } from '../../db.js';
+import { verificarToken } from '../middlewares/autenticacao.js';
 
 const router = Router();
 
@@ -29,7 +30,7 @@ router.get('/transacoes', async (req, res) => {
     }
 })
 
-router.post('/transacoes', async (req, res) => {
+router.post('/transacoes', verificarToken, async (req, res) => {
     const { valor, descricao, data_registro, data_vencimento, data_pagamento, tipo, id_categoria, id_subcategoria } = req.body;
     try {
         const comando = `INSERT INTO transacoes(valor, descricao, data_registro, data_vencimento, data_pagamento, tipo, id_categoria, id_subcategoria) VALUES($1, $2, TO_DATE($3, 'DD/MM/YYYY'), TO_DATE($4, 'DD/MM/YYYY'), TO_DATE($5, 'DD/MM/YYYY'), $6, $7, $8)`;
@@ -43,7 +44,7 @@ router.post('/transacoes', async (req, res) => {
     }
 })
 
-router.put('/transacoes/:id_transacao', async (req, res) => {
+router.put('/transacoes/:id_transacao', verificarToken, async (req, res) => {
     const { id_transacao } = req.params;
     const { valor, descricao, data_registro, data_vencimento, data_pagamento, tipo, id_categoria, id_subcategoria } = req.body;
 
@@ -63,7 +64,7 @@ router.put('/transacoes/:id_transacao', async (req, res) => {
     }
 })
 
-router.delete('/transacoes/:id_transacao', async (req, res) => {
+router.delete('/transacoes/:id_transacao', verificarToken, async (req, res) => {
     const { id_transacao } = req.params;
     try {
         const comando = `DELETE FROM transacoes WHERE id_transacao = $1`;

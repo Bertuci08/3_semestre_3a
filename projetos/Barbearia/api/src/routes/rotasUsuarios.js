@@ -1,10 +1,13 @@
 import { Router } from 'express';
 import { BD } from '../../db.js';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { autenticarToken } from '../middlewares/autenticacao.js';
 
 const router = Router();
+const SECRET_KEY = 'sua_chave_secreta';
 
-router.get('/usuarios', async (req, res) => {
+router.get('/usuarios', autenticarToken, async (req, res) => {
     try {
         const comando = `SELECT * FROM usuarios WHERE ativo = true`
         const usuarios = await BD.query(comando);
@@ -33,7 +36,7 @@ router.post('/usuarios', async (req, res) => {
     }
 })
 
-router.put('/usuarios/:id_usuario', async (req, res) => {
+router.put('/usuarios/:id_usuario', autenticarToken, async (req, res) => {
     const { id_usuario } = req.params;
     let { nome, email, senha, tipo } = req.body;
 
@@ -68,7 +71,7 @@ router.put('/usuarios/:id_usuario', async (req, res) => {
     }
 })
 
-router.delete('/usuarios/:id_usuario', async (req, res) => {
+router.delete('/usuarios/:id_usuario', autenticarToken, async (req, res) => {
     const { id_usuario } = req.params;
     try {
         const comando = `UPDATE USUARIOS SET ativo = false WHERE id_usuario = $1 `
@@ -99,7 +102,19 @@ router.post('/login', async (req, res) => {
             return res.status(401).json('Senha incorreta');
         }
 
-        return res.status(200).json('Login realizado com sucesso');
+        const token = jwt.sign({ id_usuario: usuario.id_usuario }, SECRET_KEY, { expiresIn: '15m' });
+
+        return res.status(200).json({
+            message: 'Login realizado com sucesso',
+            token: token,
+            usuario: {
+                id_usuario: usuario.id_usuario,
+                nome: usuario.nome,
+                email: usuario.email,
+                tipo: usuario.tipo
+            },
+            token
+        });
     } catch (error) {
         return res.status(500).json('Erro no login');
     }

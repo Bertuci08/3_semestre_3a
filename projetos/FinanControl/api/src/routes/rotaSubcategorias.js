@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { BD } from '../../db.js';
+import { verificarToken } from '../middlewares/autenticacao.js';
 
 const router = Router();
 
@@ -16,7 +17,7 @@ router.get('/subcategorias', async (req, res) => {
     }
 })
 
-router.post('/subcategorias', async (req, res) => {
+router.post('/subcategorias', verificarToken, async (req, res) => {
     const { nome, id_categoria } = req.body;
 
     try {
@@ -32,7 +33,7 @@ router.post('/subcategorias', async (req, res) => {
     }
 })
 
-router.put('/subcategorias/:id_subcategoria', async (req, res) => {
+router.put('/subcategorias/:id_subcategoria', verificarToken, async (req, res) => {
     const { id_subcategoria } = req.params;
     const { nome, id_categoria } = req.body;
 
@@ -56,7 +57,7 @@ router.put('/subcategorias/:id_subcategoria', async (req, res) => {
 })
 
 
-router.delete('/subcategorias/:id_subcategoria', async (req, res) => {
+router.delete('/subcategorias/:id_subcategoria', verificarToken, async (req, res) => {
     const { id_subcategoria } = req.params;
     try {
         const comando = `UPDATE SUBCATEGORIAS SET ativo = false WHERE id_subcategoria = $1`;

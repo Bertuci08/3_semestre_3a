@@ -12,6 +12,7 @@ const documentacao = {
         { name: 'Usuários', description: 'Operações relacionadas aos usuários' },
         { name: 'Categorias', description: 'Operações relacionadas as Categorias' }
     ],
+    security: [{ bearerAuth: [] }],
     paths: {
         "/usuarios": {
             get: {
@@ -35,6 +36,7 @@ const documentacao = {
                 tags: ['Usuários'],
                 summary: 'Cadastrar novo usuário',
                 description: "Recebe nome, email, senha para cadastrar novo usuário",
+                security: [],
                 requestBody: {
                     required: true,
                     content: {
@@ -603,6 +605,7 @@ const documentacao = {
                 tags: ['Usuários'],
                 summary: 'Realizar Login',
                 description: "Autentica um usuário e retorna seus dados",
+                security: [],
                 requestBody: {
                     required: true,
                     content: {
@@ -673,6 +676,13 @@ const documentacao = {
         }
     },
     components: {
+        securitySchemes: {
+            bearerAuth: {
+                type: 'http',
+                scheme: 'bearer',
+                bearerFormat: 'JWT'
+            }
+        },
         schemas: {
             Listar_Usuarios: {
                 type: 'object',
@@ -820,7 +830,8 @@ const documentacao = {
                             email: { type: "string", example: "ricardo2@email.com" },
                             senha: { type: "string", example: "Senha123" }
                         }
-                    }
+                    },
+                    token: { type: "string", example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }
                 }
             }
         }
