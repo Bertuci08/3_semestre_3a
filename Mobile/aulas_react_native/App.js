@@ -15,9 +15,11 @@
 // }
 
 import NavStack from "./src/pages/NavStack";
+import NavDrawer from "./src/pages/NavDrawer";
 
 export default function App() {
   return (
     <NavStack />
+    // <NavDrawer />
   )
 }

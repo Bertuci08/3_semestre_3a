@@ -1,12 +1,12 @@
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-// Importando telas
 import Home from './Home';
 import Cadastro from './Cadastro';
 import Relatorio from './Relatorio';
 import Graficos from './Graficos';
+import Login from './Login';
+import NavDrawer from './NavDrawer';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,15 +31,38 @@ const defaultScreenOptions = {
 const NavStack = () => {
     return (
         <NavigationContainer>
-
-            <Stack.Navigator screenOptions={defaultScreenOptions}>
+            <Stack.Navigator screenOptions={defaultScreenOptions} initialRouteName='Login' >
 
                 <Stack.Screen
                     name="Home"
                     component={Home}
                     options={{
                         title: '🏠 Tela Principal',
+                        headerShown: false,
+                        headerStyle: {
+                            backgroundColor: '#2563EB',
+                        },
+                    }}
+                />
 
+                <Stack.Screen
+                    name="Login"
+                    component={Login}
+                    options={{
+                        title: 'Login',
+                        headerShown: false,
+                        headerStyle: {
+                            backgroundColor: '#2563EB',
+                        },
+                    }}
+                />
+
+                <Stack.Screen
+                    name="MenuPrincipal"
+                    component={NavDrawer}
+                    options={{
+                        title: 'Menu Principal',
+                        headerShown: false,
                         headerStyle: {
                             backgroundColor: '#2563EB',
                         },
@@ -51,7 +74,7 @@ const NavStack = () => {
                     component={Cadastro}
                     options={{
                         title: '📝 Cadastro',
-
+                        headerShown: false,
                         headerStyle: {
                             backgroundColor: '#7C3AED',
                         },
@@ -63,7 +86,7 @@ const NavStack = () => {
                     component={Relatorio}
                     options={{
                         title: '📊 Relatórios',
-
+                        headerShown: false,
                         headerStyle: {
                             backgroundColor: '#059669',
                         },
@@ -75,11 +98,10 @@ const NavStack = () => {
                     component={Graficos}
                     options={{
                         title: '📈 Gráficos',
-
+                        headerShown: false,
                         headerStyle: {
                             backgroundColor: '#DC2626',
                         },
-
                         animation: 'fade',
                     }}
                 />
