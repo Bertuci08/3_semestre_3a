@@ -517,7 +517,7 @@ const documentacao = {
                         enum: ["E", "S"],
                         example: "S"
                     }
-                
+
                 }],
                 responses: {
                     200: {
@@ -681,7 +681,7 @@ const documentacao = {
                 tags: ['Transações'],
                 summary: 'Agendar compromisso unico',
                 description: "Esta rota verifica se o usuario possui um registro para a mesma data",
-                security: [{bearerAuth: []}],
+                security: [{ bearerAuth: [] }],
                 requestBody: {
                     content: {
                         "application/json": {
@@ -697,6 +697,69 @@ const documentacao = {
                     }
                 }
             }
+        },
+        "/dashboard": {
+            get: {
+                tags: ["Dashboard"],
+                summary: "Obtém todos os dados consolidados do dashboard",
+                description: "Retorna o resumo do mes, atual, gastos por categoria, maiores despesas",
+                responses: {
+                    200: {
+                        description: "Dados obtidos com sucesso!",
+                        content: {
+                            "application/json": {
+                                schema: {
+                                    type: "object",
+                                    properties: {
+                                        resumoMesAtual: {
+                                            type: "object",
+                                            properties: {
+                                                entradas: { type: "number", "example": 500 },
+                                                saidas: { type: "number", "example": 250 },
+                                                saldo: {type:"number", "example": 250 }
+                                            }
+                                        },
+                                        resumoCategorias: {
+                                            type: "object",
+                                            properties: {
+                                                nome: { type: "string", example: "Alimentação" },
+                                                total: { type: "number", example: 250 }
+                                            }
+                                        },
+                                        resumoMaioresGastos: {
+                                            type: "object",
+                                            properties: {
+                                                descricao: { type: "string", example: "Aluguel" },
+                                                valor: { type: "number", example: 250 },
+                                                data: { type: "string", example: "10/05/2026" }
+                                            }
+                                        },
+                                        resumoUltimasTransacoes: {
+                                            type: "object",
+                                            properties: {
+                                                descricao: { type: "string", example: "Aluguel" },
+                                                valor: { type: "number", example: 250 },
+                                                data: { type: "string", example: "10/05/2026" }
+                                            }
+                                        },
+                                        resumoEvolucao: {
+                                            type: "object",
+                                            properties: {
+                                                mes: { type: "string", example: "05/2026" },
+                                                entradas: { type: "number", example: 250 },
+                                                saida: { type: "number", example: 200 }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    500: {
+                        description: "Erro interno no servidor."
+                    }
+                }
+            },
         }
     },
     components: {

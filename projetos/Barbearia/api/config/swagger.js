@@ -435,6 +435,63 @@ const documentacao = {
                 }
             }
         },
+        "/dashboard": {
+    get: {
+        tags: ["Dashboard"],
+        summary: "Obtém todos os dados consolidados do dashboard",
+        description: "Retorna o resumo do mês, serviços mais agendados, últimos agendamentos e evolução dos agendamentos",
+        responses: {
+            200: {
+                description: "Dados obtidos com sucesso!",
+                content: {
+                    "application/json": {
+                        schema: {
+                            type: "object",
+                            properties: {
+                                resumoMesAtual: {
+                                    type: "object",
+                                    properties: {
+                                        faturamento: { type: "number", example: 1500 },
+                                        confirmados: { type: "number", example: 20 },
+                                        cancelados: { type: "number", example: 5 }
+                                    }
+                                },
+                                servicosMaisAgendados: {
+                                    type: "object",
+                                    properties: {
+                                        nome: { type: "string", example: "Corte Degradê" },
+                                        total: { type: "number", example: 15 }
+                                    }
+                                },
+                                ultimosAgendamentos: {
+                                    type: "object",
+                                    properties: {
+                                        cliente: { type: "string", example: "João" },
+                                        servico: { type: "string", example: "Barba" },
+                                        status: { type: "string", example: "confirmado" },
+                                        data: { type: "string", example: "19/05/2026 14:30" }
+                                    }
+                                },
+                                resultadoEvolucao: {
+                                    type: "object",
+                                    properties: {
+                                        mes: { type: "string", example: "05/2026" },
+                                        confirmados: { type: "number", example: 18 },
+                                        cancelados: { type: "number", example: 4 }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+
+            500: {
+                description: "Erro interno no servidor."
+            }
+        }
+    },
+}
     },
     components: {
         securitySchemes: {
