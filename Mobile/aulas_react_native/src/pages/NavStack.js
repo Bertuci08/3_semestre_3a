@@ -7,43 +7,15 @@ import Relatorio from './Relatorio';
 import Graficos from './Graficos';
 import Login from './Login';
 import NavDrawer from './NavDrawer';
+import NavBottom from './NavBottom';
+import NavTopTab from './NavTobTabs';
 
 const Stack = createNativeStackNavigator();
-
-const defaultScreenOptions = {
-    headerStyle: {
-        backgroundColor: '#0F172A',
-    },
-    headerTintColor: '#FFFFFF',
-    headerTitleAlign: 'center',
-    headerTitleStyle: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        letterSpacing: 1,
-    },
-    headerShadowVisible: false,
-    animation: 'slide_from_right',
-    contentStyle: {
-        backgroundColor: '#111827',
-    },
-};
 
 const NavStack = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator screenOptions={defaultScreenOptions} initialRouteName='Login' >
-
-                <Stack.Screen
-                    name="Home"
-                    component={Home}
-                    options={{
-                        title: '🏠 Tela Principal',
-                        headerShown: false,
-                        headerStyle: {
-                            backgroundColor: '#2563EB',
-                        },
-                    }}
-                />
+            <Stack.Navigator initialRouteName="Login">
 
                 <Stack.Screen
                     name="Login"
@@ -51,9 +23,6 @@ const NavStack = () => {
                     options={{
                         title: 'Login',
                         headerShown: false,
-                        headerStyle: {
-                            backgroundColor: '#2563EB',
-                        },
                     }}
                 />
 
@@ -63,9 +32,15 @@ const NavStack = () => {
                     options={{
                         title: 'Menu Principal',
                         headerShown: false,
-                        headerStyle: {
-                            backgroundColor: '#2563EB',
-                        },
+                    }}
+                />
+
+                <Stack.Screen
+                    name="Home"
+                    component={Home}
+                    options={{
+                        title: 'Tela Principal',
+                        headerShown: false,
                     }}
                 />
 
@@ -73,23 +48,17 @@ const NavStack = () => {
                     name="Cadastro"
                     component={Cadastro}
                     options={{
-                        title: '📝 Cadastro',
+                        title: 'Cadastro',
                         headerShown: false,
-                        headerStyle: {
-                            backgroundColor: '#7C3AED',
-                        },
                     }}
                 />
 
                 <Stack.Screen
-                    name="Relatório"
+                    name="Relatorio"
                     component={Relatorio}
                     options={{
-                        title: '📊 Relatórios',
+                        title: 'Relatórios',
                         headerShown: false,
-                        headerStyle: {
-                            backgroundColor: '#059669',
-                        },
                     }}
                 />
 
@@ -97,17 +66,12 @@ const NavStack = () => {
                     name="Graficos"
                     component={Graficos}
                     options={{
-                        title: '📈 Gráficos',
+                        title: 'Gráficos',
                         headerShown: false,
-                        headerStyle: {
-                            backgroundColor: '#DC2626',
-                        },
-                        animation: 'fade',
                     }}
                 />
 
             </Stack.Navigator>
-
         </NavigationContainer>
     );
 };

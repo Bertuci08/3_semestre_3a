@@ -4,6 +4,7 @@ import rotasUsuarios from './src/routes/rotasUsuarios.js'
 import rotasCategorias from './src/routes/rotasCategorias.js'
 import rotasSubcategorias from './src/routes/rotaSubcategorias.js'
 import rotasTransacoes from './src/routes/rotasTransacoes.js'
+import rotasDashboard from './src/routes/rotasDashboard.js'
 
 //usando swagger
 import swaggerUi from 'swagger-ui-express';
@@ -27,6 +28,7 @@ app.use(rotasUsuarios);
 app.use(rotasCategorias);
 app.use(rotasSubcategorias);
 app.use(rotasTransacoes);
+app.use(rotasDashboard)
 
 
 const porta = 3000;
