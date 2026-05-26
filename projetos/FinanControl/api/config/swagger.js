@@ -8,7 +8,14 @@ const documentacao = {
         version: '1.0.0'
     },
     servers: [
-        { url: 'http://localhost:3000', description: 'localhost' }
+        {
+            url: 'https://api-three-red.vercel.app/',
+            description: 'API Vercel'
+        },
+        {
+            url: 'http://localhost:3000/',
+            description: 'API Local'
+        }
     ],
     tags: [
         { name: 'Usuários', description: 'Operações relacionadas aos usuários' },
@@ -716,7 +723,7 @@ const documentacao = {
                                             properties: {
                                                 entradas: { type: "number", "example": 500 },
                                                 saidas: { type: "number", "example": 250 },
-                                                saldo: {type:"number", "example": 250 }
+                                                saldo: { type: "number", "example": 250 }
                                             }
                                         },
                                         resumoCategorias: {
@@ -802,9 +809,9 @@ const documentacao = {
                 type: 'object',
                 properties: {
                     id_categoria: { type: "integer", example: 1 },
-                    nome: { type: "string", example: "Tipo Alimentação" },
-                    descricao: { type: "text", example: "Descrição da categoria" },
-                    cor: { type: "string", example: "#FF0000" },
+                    nome: { type: "string", example: "computador" },
+                    descricao: { type: "text", example: "eletronico" },
+                    cor: { type: "string", example: "azul" },
                     icone: { type: "string", example: "nomeicone" },
                     tipo: { type: "string", example: "E" }
                 }
@@ -813,10 +820,10 @@ const documentacao = {
                 type: 'object',
                 required: ['nome', 'descricao', 'cor', 'icone', 'tipo'],
                 properties: {
-                    nome: { type: "string", example: "Tipo Alimentação" },
-                    descricao: { type: "text", example: "Descrição da categoria" },
-                    cor: { type: "string", example: "#FF0000" },
-                    icone: { type: "string", example: "nomeicone" },
+                    nome: { type: "string", example: "computador" },
+                    descricao: { type: "text", example: "eletronico" },
+                    cor: { type: "string", example: "azul" },
+                    icone: { type: "string", example: "icone" },
                     tipo: { type: "string", example: "E" }
                 }
             },
@@ -824,10 +831,10 @@ const documentacao = {
                 type: 'object',
                 required: ['nome', 'descricao', 'cor', 'icone', 'tipo'],
                 properties: {
-                    nome: { type: "string", example: "Tipo Alimentação" },
-                    descricao: { type: "text", example: "Descrição da categoria" },
-                    cor: { type: "string", example: "#FF0000" },
-                    icone: { type: "string", example: "nomeicone" },
+                    nome: { type: "string", example: "computador" },
+                    descricao: { type: "text", example: "eletronico" },
+                    cor: { type: "string", example: "azul" },
+                    icone: { type: "string", example: "icone    " },
                     tipo: { type: "string", example: "E" }
                 }
             },

@@ -7,14 +7,18 @@ const documentacao = {
     },
     servers: [
         {
+            url: 'https://apibarbearia-green.vercel.app',
+            description: 'API Vercel'
+        },
+        {
             url: 'http://localhost:3000',
-            description: 'Servidor local'
+            description: 'API Local'
         }
     ],
     tags: [
         { name: 'Usuários', description: 'Operações relacionadas aos usuários' },
-        { name: 'Agendamentos', description: 'Operações relacionadas aos agendamentos' },
-        { name: 'Serviços', description: 'Operações relacionadas aos serviços oferecidos' }
+        { name: 'Serviços', description: 'Operações relacionadas aos serviços oferecidos' },
+        { name: 'Agendamentos', description: 'Operações relacionadas aos agendamentos' }
     ],
     security: [{ bearerAuth: [] }],
     paths: {
