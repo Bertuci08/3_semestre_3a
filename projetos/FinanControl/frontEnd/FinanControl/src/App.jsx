@@ -1,7 +1,14 @@
-function App() {
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import Principal from "./pages/Principal"
+import Login from "./pages/Login"
+
+export default function App() {
   return (
-    <h1>FinanControl - Gestor Financeiro</h1>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/principal" element={<Principal />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
-
-export default App

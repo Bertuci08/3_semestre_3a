@@ -66,13 +66,11 @@ router.get('/dashboard', async (req, res) => {
             ORDER BY DATE_TRUNC('month', a.data_hora) ASC
         `;
 
-        // executando queries
         const resResumo = await BD.query(resumoMes);
         const resServicos = await BD.query(servicosMaisAgendados);
         const resUltimos = await BD.query(ultimosAgendamentos);
         const resEvolucao = await BD.query(evolucao);
 
-        // objeto final
         const dadosDashboard = {
             resumoMesAtual: resResumo.rows[0],
             servicosMaisAgendados: resServicos.rows,
