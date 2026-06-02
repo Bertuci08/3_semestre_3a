@@ -39,7 +39,6 @@ router.post('/usuarios', async(req, res) => {
         const valores = [nome, email, senhaCriptografada, tipo_acesso];
 
         await BD.query(comando, valores)
-        console.log(comando,valores);
 
         return res.status(201).json("Usuário cadastrado.");
     }catch(error){

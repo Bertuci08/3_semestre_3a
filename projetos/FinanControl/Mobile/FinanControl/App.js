@@ -9,10 +9,9 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="MenuDrawer" component={MenuDrawer}
-          options={{ headerShown: false }} />
+        <Stack.Screen name="MenuDrawer" component={MenuDrawer} />
       </Stack.Navigator>
     </NavigationContainer>
   );
