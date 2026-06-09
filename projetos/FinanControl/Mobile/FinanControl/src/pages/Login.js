@@ -1,5 +1,5 @@
 import { View, Text, TextInput, TouchableOpacity, Image, Switch } from 'react-native'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { enderecoServidor } from '../utils'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -47,7 +47,7 @@ export default function Login({ navigation }) {
             }
 
             if (resposta.ok) {
-                await AsyncStorage.setItem("Usuario logado", JSON.stringify(dados))
+                await AsyncStorage.setItem("Usuario logado", JSON.stringify({...dados, lembrar }))
                 navigation.navigate('MenuDrawer')
             } else {
                 setMensagem(`❌ Email ou Senha incorretos!`)
@@ -57,6 +57,19 @@ export default function Login({ navigation }) {
             setMensagem(`Erro ao realizar login: ${error.message}`)
         }
     }
+
+    useEffect(() => {
+        async function buscarUsuario() {
+            const usuarioLogado = await AsyncStorage.getItem("Usuario logado")
+            if (usuarioLogado != null) {
+                const usuario = JSON.parse(usuarioLogado)
+                if(usuario.lembrar === true) {
+                    navigation.navigate('MenuDrawer')
+                }
+            }
+        }
+        buscarUsuario()
+    }, [])
 
     return (
         <View style={EstilosLogin.container}>
@@ -109,7 +122,7 @@ export default function Login({ navigation }) {
                                 <Switch
                                     style={EstilosLogin.checkbox}
                                     value={lembrar}
-                                    onValueChange={(value) => setLembrar(value)}
+                                    onValueChange={(setLembrar)}
                                 />
                                 <Text style={EstilosLogin.rotuloCheckbox}>Lembrar-Me</Text>
                             </View>

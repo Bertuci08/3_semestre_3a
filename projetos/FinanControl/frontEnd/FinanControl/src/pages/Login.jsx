@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { enderecoServidor } from '../utils'
 
 import { MdEmail, MdLock, MdVisibility, MdVisibilityOff } from 'react-icons/md'
@@ -34,17 +34,17 @@ export default function Login() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dadosLogin)
             })
-            if (resposta.status == 404){
+            if (resposta.status == 404) {
                 setMensagem(`Rota não encontrada: ${resposta.url}`)
                 return
             }
             const dados = await resposta.json()
-            if (resposta.status == 500){
+            if (resposta.status == 500) {
                 setMensagem(`Erro no servidor: ${dados.message}`)
                 return
             }
             if (resposta.ok) {
-                localStorage.setItem("Usuario logado", JSON.stringify(dados))
+                localStorage.setItem("Usuario Logado", JSON.stringify({...dados, lembrar}))
                 navigate('/principal')
             } else {
                 setMensagem(`❌ Email ou Senha incorretos!`)
@@ -55,14 +55,28 @@ export default function Login() {
         }
     }
 
+    useEffect(() => {
+        async function buscarUsuario() {
+            const usuarioLogado = await localStorage.getItem("Usuario Logado")
+            if (usuarioLogado != null) {
+                const usuario = JSON.parse(usuarioLogado)
+                if(usuario.lembrar === true) {
+                    navigate('/principal')
+                }
+            }
+        }
+        buscarUsuario()
+    }, [])
+
+
     return (
         <div style={EstilosLogin.container}>
-            <header  style={EstilosLogin.cabecalho}>
+            <header style={EstilosLogin.cabecalho}>
                 <img src={logo} style={EstilosLogin.iconeLogo} />
-                <div> 
+                <div>
                     <h1 style={EstilosLogin.nomeApp}>FinanControl</h1>
                     <p style={EstilosLogin.subtituloApp}>O Seu Controle Financeiro</p>
-                </div>  
+                </div>
             </header>
             {/* EMAIL */}
             <main style={EstilosLogin.conteudoPrincipal}>
@@ -85,7 +99,8 @@ export default function Login() {
                     {/* LEMBRAR SENHA */}
                     <div style={EstilosLogin.entreOpcoes}>
                         <div style={EstilosLogin.containerCheckbox}>
-                            <input type="checkbox" style={EstilosLogin.checkbox} />
+                            <input type="checkbox" style={EstilosLogin.checkbox}
+                                checked={lembrar} onChange={(e) => setLembrar(e.target.checked)} />
                             <label style={EstilosLogin}>Lembrar-Me</label>
                         </div>
                         <a href="#" style={EstilosLogin.esqueceuSenha}>Esqueceu sua Senha?</a>
@@ -98,8 +113,8 @@ export default function Login() {
 
                     <p style={EstilosLogin.mensagemFeedback}>{mensagem}</p>
                 </form>
-            </main> 
-            
+            </main>
+
         </div>
     )
 }   

@@ -186,26 +186,18 @@ router.put('/transacoes/:id_transacao', autenticarToken, async (req, res) => {
 
 // Excluir transação
 router.delete('/transacoes/:id_transacao', autenticarToken, async (req, res) => {
-
     const { id_transacao } = req.params;
-
     try {
-
         const comando = `
             DELETE FROM transacoes
             WHERE id_transacao = $1
         `;
-
         await BD.query(comando, [id_transacao]);
-
         return res.status(200).json({
             message: 'Transação excluída com sucesso!'
         });
-
     } catch (error) {
-
         console.error('Erro ao excluir transacao', error.message);
-
         return res.status(500).json({
             error: 'Erro ao excluir transacao'
         });
