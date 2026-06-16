@@ -9,7 +9,7 @@ export default StyleSheet.create({
 
     overlay: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.55)', // escurece a imagem
+        backgroundColor: 'rgba(0,0,0,0.55)',
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -74,6 +74,7 @@ export default StyleSheet.create({
         marginLeft: 10,
         fontSize: 15
     },
+
 
     optionsRow: {
         flexDirection: 'row',

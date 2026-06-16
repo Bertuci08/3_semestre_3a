@@ -15,16 +15,34 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function Principal() {
     const navigation = useNavigation();
-    const [usuario, setUsuario] = useState('');
+
+    const [usuario, setUsuario] = useState({
+        nome: '',
+        email: ''
+    });
 
     useEffect(() => {
         async function carregarUsuario() {
-            const usuarioLogado = await AsyncStorage.getItem('Usuario Logado');
-            if (usuarioLogado) {
+            try {
+                const usuarioLogado =
+                    await AsyncStorage.getItem('Usuario Logado');
+
+                if (!usuarioLogado) return;
+
                 const dados = JSON.parse(usuarioLogado);
-                setUsuario(dados.email);
+
+                const user = dados.user || dados.usuario || dados;
+
+                setUsuario({
+                    nome: user.nome || user.name || 'Sem nome',
+                    email: user.email || 'Sem email'
+                });
+
+            } catch (error) {
+                console.log('Erro ao carregar usuário:', error);
             }
         }
+
         carregarUsuario();
     }, []);
 
@@ -53,8 +71,16 @@ export default function Principal() {
 
                 <View style={styles.usuarioBox}>
                     <MaterialCommunityIcons name="account-circle" size={70} color="#c5a059" />
-                    <Text style={styles.usuarioLabel}>Usuário Logado</Text>
-                    <Text style={styles.usuarioEmail}>{usuario}</Text>
+
+                    {/* NOME */}
+                    <Text style={styles.usuarioLabel}>
+                        {usuario.nome}
+                    </Text>
+
+                    {/* EMAIL */}
+                    <Text style={styles.usuarioEmail}>
+                        {usuario.email}
+                    </Text>
                 </View>
 
                 <View style={styles.menuContainer}>
@@ -86,16 +112,18 @@ export default function Principal() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#121212', // Cor escura que cobrirá toda a tela
+        backgroundColor: '#121212',
     },
+
     scrollContainer: {
         paddingHorizontal: 20,
-        paddingTop: 90, // Espaço para não cobrir a logo com o botão sair
+        paddingTop: 90,
         paddingBottom: 30,
     },
+
     botaoSair: {
         position: 'absolute',
-        top: 50, // Ajuste dependendo do dispositivo/StatusBar
+        top: 50,
         right: 20,
         zIndex: 100,
         flexDirection: 'row',
@@ -105,16 +133,19 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         borderRadius: 12,
     },
+
     textoSair: {
         color: '#fff',
         fontWeight: 'bold',
         marginLeft: 6,
     },
+
     logo: {
-        width: 220,
+        width: 320,
         height: 90,
         alignSelf: 'center',
     },
+
     titulo: {
         color: '#fff',
         fontSize: 30,
@@ -122,35 +153,41 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 10,
     },
+
     subtitulo: {
         color: '#aaa',
         textAlign: 'center',
         marginTop: 5,
         marginBottom: 25,
     },
+
     usuarioBox: {
         alignItems: 'center',
         marginBottom: 30,
     },
+
     usuarioLabel: {
-        color: '#aaa',
-        marginTop: 10,
-        fontSize: 15,
-    },
-    usuarioEmail: {
         color: '#c5a059',
+        marginTop: 10,
         fontSize: 18,
-        fontWeight: '#121212' === '#121212' ? 'bold' : 'normal',
-        marginTop: 5,
+        fontWeight: 'bold',
     },
+
+    usuarioEmail: {
+        color: '#aaa',
+        fontSize: 14,
+        marginTop: 4,
+    },
+
     menuContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
     },
+
     menuCard: {
         width: '48%',
-        backgroundColor: '#1e1e1e', // Um cinza levemente mais claro que o fundo para destacar os cards
+        backgroundColor: '#1e1e1e',
         borderRadius: 20,
         padding: 25,
         marginBottom: 15,
@@ -158,6 +195,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'rgba(255,255,255,0.05)',
     },
+
     menuText: {
         color: '#fff',
         marginTop: 10,
