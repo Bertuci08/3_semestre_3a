@@ -36,7 +36,7 @@ router.post('/categorias', autenticarToken, async (req, res) => {
         return res.status(201).json("Categoria cadastrada.");
     } catch (error) {
         console.error('Erro ao cadastrar categorias', error.message);
-        return res.status(500).json({ error: 'Erro ao cadastrar categorias' })
+        return res.status(500).json({ error: 'Erro ao cadastrar categorias' + error.message })
     }
 })
 
@@ -65,7 +65,7 @@ router.put('/categorias/:id_categoria', autenticarToken, async (req, res) => {
         return res.status(200).json('Categoria foi atualizada!');
     } catch (error) {
         console.error('Erro ao atualizar categorias', error.message);
-        return res.status(500).json({ error: 'Erro ao atualizar categorias' })
+        return res.status(500).json({ error: 'Erro ao atualizar categorias' + error.message })
     }
 })
 

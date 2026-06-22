@@ -29,7 +29,7 @@ router.post('/subcategorias', autenticarToken, async (req, res) => {
         return res.status(201).json("Subcategoria cadastrada.");
     } catch (error) {
         console.error('Erro ao cadastrar subcategorias', error.message);
-        return res.status(500).json({ error: 'Erro ao cadastrar subcategorias' })
+        return res.status(500).json({ error: 'Erro ao cadastrar subcategorias' + error.message  })
     }
 })
 
@@ -52,7 +52,7 @@ router.put('/subcategorias/:id_subcategoria', autenticarToken, async (req, res) 
         return res.status(200).json('Subcategoria foi atualizada!');
     } catch (error) {
         console.error('Erro ao atualizar subcategorias', error.message);
-        return res.status(500).json({ error: 'Erro ao atualizar subcategorias' })
+        return res.status(500).json({ error: 'Erro ao atualizar subcategorias' + error.message })
     }
 })
 

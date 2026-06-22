@@ -43,7 +43,7 @@ router.post('/usuarios', async(req, res) => {
         return res.status(201).json("Usuário cadastrado.");
     }catch(error){
         console.error('Erro ao cadastrar usuários', error.message);
-        return  res.status(500).json({error: 'Erro ao cadastrar usuarios'})
+        return  res.status(500).json({error: 'Erro ao cadastrar usuarios'  + error.message })
     }
 })
 
@@ -76,7 +76,7 @@ router.put('/usuarios/:id_usuario', autenticarToken, async(req, res) =>{
         return res.status(200).json('Usuario foi atualizado!');
     }catch(error){
         console.error('Erro ao atualizar usuários', error.message);
-        return  res.status(500).json({error: 'Erro ao atualizar usuarios'})
+        return  res.status(500).json({error: 'Erro ao atualizar usuarios' + error.message })
     }
 })
 

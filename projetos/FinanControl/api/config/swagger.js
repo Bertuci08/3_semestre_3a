@@ -9,7 +9,7 @@ const documentacao = {
     },
     servers: [
         {
-            url: 'https://api-three-red.vercel.app/',
+            url: 'https://apifinancontrol-ebon.vercel.app/',
             description: 'API Vercel'
         },
         {
